@@ -42,8 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const isRightEdge = i === width -1
       if (squares[i].classList.contains('valid')) {
           if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')) total ++
+          if (i > 9 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')) total ++
           if (i > 10 && squares[i -width].classList.contains('bomb')) total ++
+          if (i > 11 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')) total ++
           if (i < 98 && !isRightEdge && squares[i +1].classList.contains('bomb')) total ++
+          if (i < 90 && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')) total ++
+          if (i < 88 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')) total ++
           if (i < 89 && squares[i +width].classList.contains('bomb')) total ++
           squares[i].setAttribute('data', total)
           if (total > 0) squares[i].classList.add('number')
@@ -68,11 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         flags --
   		}
   	}
-  }
-
-  //get the coordinates of your click on the grid with X and Y axis
-  function getCoordinates(index) {
-    return [index % width, Math.floor(index / width)]
   }
 
   let firstClick
@@ -103,52 +102,52 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-
-
   //check the square once it has been clicked
   function checkSquare(square, currentId) {
-  	const [x, y] = getCoordinates(currentId)
+    let x = currentId
+    const isLeftEdge = x % width === 0
+    const isRightEdge = x === width -1
 
   	setTimeout(() => {
-  		if (x > 0) {
+  		if (x > 0 && !isLeftEdge) {
         const newId = squares[parseInt(currentId) -1].id
   			const newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
-  		if (x < width - 1) {
-        const newId = squares[parseInt(currentId) +1].id
+  		if (x > 9 && !isRightEdge) {
+        const newId = squares[parseInt(currentId) +1 -width].id
   			const newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
-  		if (y > 0) {
+  		if (x > 10) {
         const newId = squares[currentId -width].id
   			const newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
-  		if (y < width - 1) {
-        const newId = squares[parseInt(currentId) +width].id
-  			let newSquare = document.getElementById(newId)
-  			click(newSquare, newId);
-  		}
-
-  		if (x > 0 && y > 0) {
+  		if (x > 11 && !isLeftEdge) {
         const newId = squares[parseInt(currentId) -1 -width].id
   			let newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
-  		if (x < width - 1 && y < width - 1) {
-        const newId = squares[parseInt(currentId) +1 +width].id
+
+  		if (x < 98 && !isRightEdge) {
+        const newId = squares[parseInt(currentId) +1].id
+  			let newSquare = document.getElementById(newId)
+  			click(newSquare, newId);
+  		}
+  		if (x < 90 && !isLeftEdge) {
+        const newId = squares[parseInt(currentId) -1 +width].id
   			let newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
 
-  		if (y > 0 && x < width - 1) {
-        const newId = squares[parseInt(currentId) +1 -width].id
+  		if (x < 88 && !isRightEdge) {
+        const newId = squares[parseInt(currentId) +1 +width].id
   			let newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
-  		if (x > 0 && y < width - 1) {
-        const newId = squares[parseInt(currentId) -1 +width].id
+  		if (x < 89) {
+        const newId = squares[parseInt(currentId) +width].id
   			let newSquare = document.getElementById(newId)
   			click(newSquare, newId);
   		}
