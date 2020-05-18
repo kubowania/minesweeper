@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let newSquare = document.getElementById(newId)
         click(newSquare, newId);
       }
-    , 10);
+    }, 10);
   }
 
   //game over
@@ -180,4 +180,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 })
-
