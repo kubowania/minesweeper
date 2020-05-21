@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       if (currentId > 0 && !isLeftEdge) {
+        //can refactor to: const newId = parseInt(currentId) -1
         const newId = squares[parseInt(currentId) -1].id
         const newSquare = document.getElementById(newId)
         click(newSquare, newId)
