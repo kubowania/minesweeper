@@ -121,13 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
         square.innerHTML = total;
         return;
       }
-      checkSquare(square, currentId);
+      checkSquare(currentId);
     }
     square.classList.add("checked");
   }
 
   //check neighboring squares once square is clicked
-  function checkSquare(square, currentId) {
+  function checkSquare(currentId) {
     const isLeftEdge = currentId % width === 0;
     const isRightEdge = currentId % width === width - 1;
 
