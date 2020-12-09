@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (squares[i].classList.contains('valid')) {
         if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')) total ++
         if (i > 9 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')) total ++
-        if (i > 10 && squares[i -width].classList.contains('bomb')) total ++
+        if (i > 9 && squares[i -width].classList.contains('bomb')) total ++
         if (i > 11 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')) total ++
         if (i < 98 && !isRightEdge && squares[i +1].classList.contains('bomb')) total ++
         if (i < 90 && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')) total ++
