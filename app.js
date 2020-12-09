@@ -44,14 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const isRightEdge = (i % width === width -1)
 
       if (squares[i].classList.contains('valid')) {
-        if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')) total ++
-        if (i > 9 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')) total ++
-        if (i > 9 && squares[i -width].classList.contains('bomb')) total ++
-        if (i > 11 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')) total ++
-        if (i < 98 && !isRightEdge && squares[i +1].classList.contains('bomb')) total ++
-        if (i < 90 && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')) total ++
-        if (i < 88 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')) total ++
-        if (i < 89 && squares[i +width].classList.contains('bomb')) total ++
+        // left bomb
+        if (i > 0 && !isLeftEdge && squares[i-1].classList.contains('bomb')) total ++
+        // top-right bomb
+        if (i > 9 && !isRightEdge && squares[i+1-width].classList.contains('bomb')) total ++
+        // top bomb
+        if (i >= 10 && squares[i-width].classList.contains('bomb')) total ++
+        // top-left bomb
+        if (i >= 11 && !isLeftEdge && squares[i-1-width].classList.contains('bomb')) total ++
+        // right bomb
+        if (i <= 98 && !isRightEdge && squares[i+1].classList.contains('bomb')) total ++
+        // bottom-left bomb
+        if (i < 90 && !isLeftEdge && squares[i-1+width].classList.contains('bomb')) total ++
+        // bottom-right bomb
+        if (i <= 88 && !isRightEdge && squares[i+1+width].classList.contains('bomb')) total ++
+        // bottom bomb
+        if (i <= 89 && squares[i+width].classList.contains('bomb')) total ++
         squares[i].setAttribute('data', total)
       }
     }
