@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const bombsArray = Array(bombAmount).fill('bomb')
     const emptyArray = Array(width*width - bombAmount).fill('valid')
     const gameArray = emptyArray.concat(bombsArray)
-    const shuffledArray = gameArray.sort(() => Math.random() -0.5)
+    gameArray.sort(() => Math.random() -0.5)
 
     for(let i = 0; i < width*width; i++) {
       const square = document.createElement('div')
       square.setAttribute('id', i)
-      square.classList.add(shuffledArray[i])
+      square.classList.add(gameArray[i])
       grid.appendChild(square)
       squares.push(square)
 
@@ -31,17 +31,24 @@ document.addEventListener('DOMContentLoaded', () => {
       })
 
       //cntrl and left click
+      //this does not work on windows 10 + firefox
       square.oncontextmenu = function(e) {
         e.preventDefault()
         addFlag(square)
       }
+      //right click
+      square.addEventListener("contextmenu", ev => {
+            ev.preventDefault();
+            addFlag(square);
+            return false;
+        });
     }
 
     //add numbers
     for (let i = 0; i < squares.length; i++) {
       let total = 0
-      const isLeftEdge = (i % width === 0)
-      const isRightEdge = (i % width === width -1)
+      const isLeftEdge = checkIsLeftEdge(i)
+      const isRightEdge = checkIsRightEdge(i)
 
       if (squares[i].classList.contains('valid')) {
         if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')) total ++
@@ -103,63 +110,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //check neighboring squares once square is clicked
   function checkSquare(square, currentId) {
-    const isLeftEdge = (currentId % width === 0)
-    const isRightEdge = (currentId % width === width -1)
+    const isLeftEdge = checkIsLeftEdge(currentId)
+    const isRightEdge = checkIsRightEdge(currentId)
 
     setTimeout(() => {
       if (currentId > 0 && !isLeftEdge) {
-        const newId = squares[parseInt(currentId) -1].id
-        //const newId = parseInt(currentId) - 1   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId -1
+        click(squares(newId);
       }
       if (currentId > 9 && !isRightEdge) {
-        const newId = squares[parseInt(currentId) +1 -width].id
-        //const newId = parseInt(currentId) +1 -width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId +1 -width
+        click(squares(newId);
       }
       if (currentId > 10) {
-        const newId = squares[parseInt(currentId -width)].id
-        //const newId = parseInt(currentId) -width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId -width
+        click(squares(newId);
       }
       if (currentId > 11 && !isLeftEdge) {
-        const newId = squares[parseInt(currentId) -1 -width].id
-        //const newId = parseInt(currentId) -1 -width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId -1 -width
+        click(squares(newId);
       }
       if (currentId < 98 && !isRightEdge) {
-        const newId = squares[parseInt(currentId) +1].id
-        //const newId = parseInt(currentId) +1   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId +1
+        click(squares(newId);
       }
       if (currentId < 90 && !isLeftEdge) {
-        const newId = squares[parseInt(currentId) -1 +width].id
-        //const newId = parseInt(currentId) -1 +width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId -1 +width
+        click(squares(newId);
       }
       if (currentId < 88 && !isRightEdge) {
-        const newId = squares[parseInt(currentId) +1 +width].id
-        //const newId = parseInt(currentId) +1 +width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId +1 +width
+        click(squares(newId);
       }
       if (currentId < 89) {
-        const newId = squares[parseInt(currentId) +width].id
-        //const newId = parseInt(currentId) +width   ....refactor
-        const newSquare = document.getElementById(newId)
-        click(newSquare)
+        const newId = currentId +width
+        click(squares(newId);
       }
     }, 10)
   }
 
   //game over
-  function gameOver(square) {
+  function gameOver() {
     result.innerHTML = 'BOOM! Game Over!'
     isGameOver = true
 
@@ -172,6 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
+          
+  function checkIsLeftEdge(index) {
+    return index % width === 0;
+  };
+          
+  function checkIsRightEdge(index) {
+      return index % width === width - 1;
+  };
+    
 
   //check for win
   function checkForWin() {
