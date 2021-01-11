@@ -16,7 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const bombsArray = Array(bombAmount).fill('bomb')
     const emptyArray = Array(width*width - bombAmount).fill('valid')
     const gameArray = emptyArray.concat(bombsArray)
-    const shuffledArray = gameArray.sort(() => Math.random() -0.5)
+    const shuffledArray = shuffle(gameArray)
+
+    grid.style.width = 40 * width + "px"
+    grid.style.height = 40 * width + "px"
 
     for(let i = 0; i < width*width; i++) {
       const square = document.createElement('div')
@@ -45,18 +48,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (squares[i].classList.contains('valid')) {
         if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')) total ++
-        if (i > 9 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')) total ++
-        if (i > 10 && squares[i -width].classList.contains('bomb')) total ++
-        if (i > 11 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')) total ++
-        if (i < 98 && !isRightEdge && squares[i +1].classList.contains('bomb')) total ++
-        if (i < 90 && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')) total ++
-        if (i < 88 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')) total ++
-        if (i < 89 && squares[i +width].classList.contains('bomb')) total ++
+        if (i > width - 1 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')) total ++
+        if (i > width && squares[i -width].classList.contains('bomb')) total ++
+        if (i > width + 1 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')) total ++
+        if (i < width * width - 2 && !isRightEdge && squares[i +1].classList.contains('bomb')) total ++
+        if (i < width * width - width && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')) total ++
+        if (i < width * width - width - 2 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')) total ++
+        if (i < width * width - width - 1 && squares[i +width].classList.contains('bomb')) total ++
         squares[i].setAttribute('data', total)
       }
     }
   }
   createBoard()
+
+  // shuffle game board
+  function shuffle(a) {
+      let arr = JSON.parse(JSON.stringify(a))
+      for (let i = arr.length - 1; i > 0; i--) {
+          let j, h
+          j = Math.floor(Math.random() * (i + 1))
+          h = arr[i]
+          arr[i] = arr[j]
+          arr[j] = h
+      }
+      return arr
+  }
 
   //add Flag with right click
   function addFlag(square) {
