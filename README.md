@@ -1,4 +1,4 @@
-# Minesweeper using the Recursion Algorithm
+# Minesweeper
 A simplified game of minesweeper using vanilla JavaScript
 
 
